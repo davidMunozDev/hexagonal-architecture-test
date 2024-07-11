@@ -1,0 +1,31 @@
+html {
+	box-sizing: border-box;
+	font-size: 1rem;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+body {
+	background-color: #f2f2f2;
+	margin: 0;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	color: #4c4c4c;
+	height: 100vh;
+}
+a {
+	text-decoration: none;
+}
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+input[type='text'] {
+	background-color: white;
+}
