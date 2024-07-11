@@ -5,7 +5,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
 	server: { port: 8080, host: true },
-	base: '/BBVA-Technical-Test/',
+	base: '/hexagonal-architecture-test/',
 	resolve: {
 		alias: {
 			'@': resolve(__dirname, './src'),
@@ -30,12 +30,12 @@ export default defineConfig({
 				display_override: ['standalone', 'fullscreen'],
 				icons: [
 					{
-						src: '/BBVA-Technical-Test/favicon.png',
+						src: '/hexagonal-architecture-test/favicon.png',
 						sizes: '192x192',
 						type: 'image/png',
 					},
 					{
-						src: '/BBVA-Technical-Test/splash.png',
+						src: '/hexagonal-architecture-test/splash.png',
 						sizes: '1439x1439',
 						type: 'image/png',
 					},

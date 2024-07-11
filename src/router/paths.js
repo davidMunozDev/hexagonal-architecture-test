@@ -1,7 +1,7 @@
 export const PATHS = {
 	base: '/',
-	dashboard: '/BBVA-Technical-Test/',
-	detail: '/BBVA-Technical-Test/detail/:name/:country',
+	dashboard: '/hexagonal-architecture-test/',
+	detail: '/hexagonal-architecture-test/detail/:name/:country',
 };
 
 export const getDetailPath = ({ name, country, coordinates }) => {
