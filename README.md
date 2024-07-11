@@ -1,37 +1,36 @@
-# Weather BBVA technical test
+# Hexagonal architecture poc
 
-La Weather App es una aplicación que te brinda información precisa sobre el clima tanto de ese momento como semanal, diseñada siguiendo una arquitectura hexagonal orientada al frontend para garantizar la robustez, la testablidad y la facilidad de mantenimiento del código. Se ha prestado especial atención al testing, lo que asegura que la aplicación funcione de manera confiable en todo momento, incluso cuando no estés conectado a Internet. La app al ser una pwa se puede descargar para usarla desde el escritorio.
+This app provides accurate weather information both at the moment and weekly. It is designed with a frontend-oriented hexagonal architecture to ensure code robustness, testability, and ease of maintenance. Special attention has been paid to testing, which ensures that the application works reliably at all times, even when you are not connected to the Internet. The app being a PWA can be downloaded for use from the desktop.
 
-## Arquitectura
-La arquitectura planteada es una arquitectura limpia comunmente conocida como hexagonal. La he puesto en practica con ciertas licencias para orientarla al front end sin ir contara el planteamiento del framework.
+## Architecture
+The proposed architecture is commonly known as a hexagonal architecture. I have put it into practice with certain liberties to orient it towards the frontend without violating the framework's approach
 
-### 📂 Estructura de carpetas
+### 📂 Folder structure
 
 ![Screenshot 2023-09-16 at 16 11 30](https://github.com/davidmunozvi/BBVA-Technical-Test/assets/43704932/b75dcaed-c3c3-4b27-9e04-005509d47d72)
 
-La estructura de carpetas sigue el planteamiento de una arquitectura hexagonal con sus capas de dominio, aplicacion e infraestructura. El objetivo de esto es abstraernos por completo de los detalles de implementación como las apis externas. De esta manera protegemos la logica de negocio de nuestra aplicación (capa de dominio).
-Además para una mayor escalabilidad aplico el vertical slicing que consiste en dividir el sistema en funcionalidades verticales completas, que atraviesan todas las capas de la arquitectura hexagonal.
-Por lo tanto esto da como resultado:
+The folder structure follows the approach of a hexagonal architecture with its domain, application, and infrastructure layers. The goal is to completely abstract us from implementation details such as external APIs. This way, we protect the business logic of our application (domain layer).
+Moreover, for greater scalability, I apply vertical slicing which consists of dividing the system into complete vertical functionalities that traverse all layers of the hexagonal architecture. This results in:
 
 ![Screenshot 2023-09-16 at 16 26 08](https://github.com/davidmunozvi/BBVA-Technical-Test/assets/43704932/5cee16fa-364a-4311-a94e-f9d5e9089c9c)
 
-### ䷦ Flujo de datos
+### ䷦ Data flow
 
 ![Screenshot 2023-09-16 at 16 47 18](https://github.com/davidmunozvi/BBVA-Technical-Test/assets/43704932/1addc34e-f770-4515-b435-9cc38350664e)
 
-- Los bloques azules indican la capa de infraestructura en la cual tanto los modulos de infrestructura de cada una de las entidades como las factorias y el App pueden importar el repositorio e inicializarlo.
-- Los bloques rosas indican la capa de aplicación la cual engloba los modulos de alicación de cada una de las entidades, los contextos, las paginas y las secciones. Estos acceden a las funcionalidades de los repositorios mediante inyección de dependencias y se encargan de aplicar los casos de uso. Estas capas solo pueden importar dominio. El framework eact al ser una dependencia siguiendo el concepto debería ser parte de la capa de infraestructura pero en testing será nuestro punto de entrada en los tests unitarios, algo que tradicionalmente ha sido la capa de aplicación.
-- El bloque naranja no puede tener ningún tipo de dependencia ya que es la lógica de negocio de nuestra aplicación.
-- El bloque amarillo no tiene ningún tipo de lógica y surte de componentes compartidos a las páginas y secciones.
+- The blue blocks indicate the infrastructure layer where both the infrastructure modules of each of the entities and the factories and the App can import the repository and initialize it.
+- The pink blocks indicate the application layer which encompasses the application modules of each of the entities, the contexts, pages, and sections. These access the functionalities of the repositories through dependency injection and are responsible for applying the use cases. These layers can only import the domain. React framework, being a dependency, following the concept it should be part of the infrastructure layer but in testing, it will be our entry point in unit tests, something that traditionally has been the application layer.
+- The orange block cannot have any type of dependency since it is the business logic of our application.
+- The yellow block has no logic and provides shared components to the pages and sections.
 
-## Estrategia de cacheo
+## Caching strategy
 
-Para los recursos de apliacción como imagenes y archivos se usa la estrategia de cache first para obtenerlo de cache siempre que sea posible.
+For application resources such as images and files, the cache-first strategy is used to always get it from the cache when possible.
 
 <img width="718" alt="Screenshot 2023-09-16 at 17 01 48" src="https://github.com/davidmunozvi/BBVA-Technical-Test/assets/43704932/7504e595-57f5-4613-9f9e-337bba318dda">
 
 
-Para las llamadas a APIs se usa la estrategia de stale while revalidate de esta manera los recursos cargaran lo mas rapido posible pero manteniendolos lo mas actualizados posible en el modo offline.
+For API calls, the stale-while-revalidate strategy is used so that resources load as quickly as possible but keep them as up-to-date as possible in offline mode.
 
 <img width="719" alt="Screenshot 2023-09-16 at 17 01 34" src="https://github.com/davidmunozvi/BBVA-Technical-Test/assets/43704932/1992b01c-78d9-4021-9380-c55d79016701">
 
@@ -39,21 +38,19 @@ Para las llamadas a APIs se usa la estrategia de stale while revalidate de esta 
 
 ![Screenshot 2023-09-16 at 17 04 50](https://github.com/davidmunozvi/BBVA-Technical-Test/assets/43704932/2197bc66-5efc-4e14-ad55-c24ad898736f)
 
-En la aplicación se ha testeado la capa de aplicacion con tests de los componetes y páginas con testing library. La capa de dominio con vitest.
-A demás de esto hay test e2e para asegurar los happy paths de la aplicación.
-Gracias a la separación de la capa infraestructura y los ObjectMothers ha facilitado mucho los test pudiendo modificar los repositorios gracias a la inyección de dependencias.
+In the app, the application layer has been tested with component and page tests using testing library. The domain layer with vitest. In addition to this, there are e2e tests to ensure the happy paths of the application. Thanks to the separation of the infrastructure layer and the ObjectMothers, testing has been greatly facilitated by being able to modify the repositories thanks to dependency injection.
 
-Los test unitarios y de componete se ejecutan en cada commit gracias a lo hooks de husky.
+Unit and component tests are executed on each commit thanks to Husky hooks.
 
 ![Screenshot 2023-09-16 at 17 15 50](https://github.com/davidmunozvi/BBVA-Technical-Test/assets/43704932/b0d1e895-c823-4c35-8733-a3f8f58a6080)
 
-Los rest e2e se ejecutan antes de mergear la pr para asegurar los flujos principales.
+E2E tests are executed before merging the PR to ensure the main flows.
 
 ![Screenshot 2023-09-16 at 17 18 11](https://github.com/davidmunozvi/BBVA-Technical-Test/assets/43704932/fafb1efe-7e21-4af9-a555-98358a0aeecf)
 
-## Inicializar y probar la app
+## Initialize and test the app
 
-### 📦 Instalación
+### 📦 Installation
 
 Install the project dependencies with npm
 
@@ -75,20 +72,10 @@ npm run test:ui
 npm run test:ci
 ```
 `
-En los test tambien se puede ver la cobertura de código en la parte superior derecha 
+In the tests, you can also see the code coverage at the top right corner
 
 ![Screenshot 2023-09-16 at 17 21 42](https://github.com/davidmunozvi/BBVA-Technical-Test/assets/43704932/2af53c17-48b1-4eec-a9d9-4209b85bdca9)
 
-### Producción
-Sitio web: https://davidmunozvi.github.io/BBVA-Technical-Test/
-
-Esta aplicación se puede usar en modo offline gracias al cacheo comentado anteriormente y se pude descargar.
-
-![Screenshot 2023-09-16 at 15 12 22](https://github.com/davidmunozvi/BBVA-Technical-Test/assets/43704932/1efc97be-6ec2-413a-9b8e-ed30982e0194)
-
-changelog por si es de interes https://github.com/davidmunozvi/BBVA-Technical-Test/releases
-
-Espero que te guste!
-
-### Gracias por llegar hasta aquí 😄
+### Production
+https://davidmunozdev.github.io/hexagonal-architecture-test/
 

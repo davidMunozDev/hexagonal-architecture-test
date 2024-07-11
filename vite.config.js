@@ -21,7 +21,7 @@ export default defineConfig({
 			srcDir: 'src',
 			filename: 'dev-sw.js',
 			manifest: {
-				name: 'Weather app for BBVA',
+				name: 'Weather app hexa poc',
 				background_color: '#ffffff',
 				categories: ['weather', 'forecast'],
 				description: 'Weather app',
