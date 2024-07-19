@@ -2,16 +2,18 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { resolve } from 'path';
+import viteTsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
 	server: { port: 8080, host: true },
 	base: '/hexagonal-architecture-test/',
 	resolve: {
 		alias: {
-			'@': resolve(__dirname, './src'),
+			'@': resolve(__dirname, 'src'),
 		},
 	},
 	plugins: [
+		viteTsconfigPaths(),
 		react(),
 		VitePWA({
 			devOptions: {
@@ -44,6 +46,7 @@ export default defineConfig({
 			registerType: 'autoUpdate',
 		}),
 	],
+	//@ts-ignore
 	test: {
 		globals: true,
 		environment: 'jsdom',

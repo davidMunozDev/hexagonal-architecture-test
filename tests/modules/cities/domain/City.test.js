@@ -3,7 +3,6 @@ import {
 	isCityNameValid,
 	isCityValid,
 	isCityCountryValid,
-	areCoordinatesValid,
 	transformCoordinatesFromUrlParam,
 	transformCoordinatesToUrlParam,
 } from '@/modules/cities/domain/City';
@@ -32,15 +31,6 @@ describe('City domain', () => {
 		});
 		it('should return true when invalid city country', () => {
 			expect(isCityCountryValid(invalidCity.country)).toBe(false);
-		});
-	});
-
-	describe('areCoordinatesValid', () => {
-		it('should return true when valid city coordinates', () => {
-			expect(areCoordinatesValid(validCity.coordinates)).toBe(true);
-		});
-		it('should return true when invalid city coordinates', () => {
-			expect(areCoordinatesValid(invalidCity.coordinates)).toBe(false);
 		});
 	});
 

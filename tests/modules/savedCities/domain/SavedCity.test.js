@@ -53,7 +53,9 @@ describe('Saved City domain', () => {
 			const savedCity = SavedCityMother.create();
 			const savedCities = [savedCity];
 
-			expect(addSavedCity(savedCities, savedCity)).toMatchObject(savedCities);
+			expect(
+				addSavedCity(savedCities, CityMother.create({ ...savedCity })),
+			).toMatchObject(savedCities);
 		});
 	});
 

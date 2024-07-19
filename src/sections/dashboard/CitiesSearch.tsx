@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import {
 	transformCoordinatesToUrlParam,
 	isCityNameValid,
+	City,
 } from '@/modules/cities/domain/City';
+import { CityRepository } from '@/modules/cities/domain/CityRepository';
 import { useCitySelector } from '@/sections/dashboard/useCityselector';
 import { getDetailPath } from '@/router/paths';
 import InputText from '@/sections/shared/InputText';
@@ -31,28 +33,30 @@ const StyledSuggestionsWrapper = styled.div`
 	border-radius: 6px;
 `;
 
-const renderOptions = cities => (
-	<LinksList
-		getPath={item =>
-			getDetailPath({
-				name: item.name,
-				country: item.country,
-				coordinates: transformCoordinatesToUrlParam(item.coordinates),
-			})
-		}
-		options={cities}
-		render={city => `${city.name} ${city.country}`}
-	/>
-);
+const renderOptions = (cities: City[]) => {
+	const detailPath = (item: City) =>
+		getDetailPath({
+			name: item.name,
+			country: item.country,
+			coordinates: transformCoordinatesToUrlParam(item.coordinates),
+		});
+	const render = (city: City) => `${city.name} ${city.country}`;
 
-function CitiesSearch({ repository }) {
+	return <LinksList getPath={detailPath} options={cities} render={render} />;
+};
+
+function CitiesSearch({ repository }: { repository: CityRepository }) {
 	const [value, setValue] = useState('');
 	const [isFocused, setIsFocused] = useState(false);
 	const { cities } = useCitySelector({ search: value, repository });
 	const ref = useRef(null);
 	useClickOutside(ref, () => setIsFocused(false));
 
-	const renderSuggestionsContent = cities => {
+	const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setValue(e.target.value);
+	};
+
+	const renderSuggestionsContent = (cities: City[]) => {
 		if (!value) return null;
 		if (!isCityNameValid(value))
 			return (
@@ -74,7 +78,7 @@ function CitiesSearch({ repository }) {
 			<InputText
 				name='search'
 				placeholder={translations.dashboard.input_search_placeholder}
-				onChange={e => setValue(e.target.value)}
+				onChange={handleOnChange}
 				value={value}
 				onFocus={() => setIsFocused(true)}
 			/>

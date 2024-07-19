@@ -21,6 +21,13 @@ function InputText({
 	onChange = () => {},
 	placeholder = 'placeholder',
 	name = 'input',
+}: {
+	onFocus?: () => void;
+	onBlur?: () => void;
+	value: string;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	placeholder?: string;
+	name?: string;
 }) {
 	return (
 		<StyledSearchInput
